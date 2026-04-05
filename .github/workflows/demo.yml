@@ -1,20 +1,18 @@
-# .github/workflows/new-branch-print.yml
-name: Print New Branch Payload
+# .github/workflows/webhook-branch.yml
+name: Webhook Triggered Branch Workflow
 
+# Triggered by repository_dispatch from an external webhook
 on:
-  push:
-    # Listen to all branches
-    branches:
-      - '**'
+  repository_dispatch:
+    types: [new-branch-webhook]
 
 jobs:
   print-new-branch:
     runs-on: ubuntu-latest
-    if: github.event.before == '0000000000000000000000000000000000000000'
     steps:
-      - name: Print new branch payload
+      - name: Print webhook payload
         run: |
-          echo "A new branch was created!"
-          echo "Branch name: ${{ github.ref_name }}"
+          echo "Webhook triggered workflow!"
+          echo "Branch name (from payload): ${{ github.event.client_payload.branch }}"
           echo "Full payload:"
-          echo '${{ toJson(github.event) }}'
+          echo '${{ toJson(github.event.client_payload) }}'
