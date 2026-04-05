@@ -1,0 +1,15 @@
+# .github/workflows/webhook-print.yml
+name: Webhook Payload Printer
+
+on:
+  repository_dispatch:
+    types: [webhook-received]
+
+jobs:
+  print-payload:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print the webhook payload
+        run: |
+          echo "Full payload:"
+          echo '${{ toJson(github.event.client_payload) }}'
